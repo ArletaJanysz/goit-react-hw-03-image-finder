@@ -20,12 +20,10 @@ export function App() {
     setPage(1);
   };
 
-  const fetchImages = () => {
+  const fetchImages = useEffect(() => {
     const apiKey = '39307945-e2807d203f602e849866feaef';
     const perPage = 12;
-
     setLoading(true);
-
     fetch(
       `https://pixabay.com/api/?q=${query}&page=${page}&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=${perPage}`
     )
@@ -34,7 +32,7 @@ export function App() {
         setImages([...images, ...data.hits]);
         setLoading(false);
       });
-  };
+  }, [images, page, query]);
 
   const loadMoreImages = () => {
     const nextPage = page + 1;
@@ -53,7 +51,7 @@ export function App() {
     if (query === '') return;
 
     fetchImages();
-  }, [query, page]);
+  }, [query, page, fetchImages]);
 
   return (
     <div className="App">
